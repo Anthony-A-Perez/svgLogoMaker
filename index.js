@@ -1,7 +1,8 @@
 const fs = require('fs');
 const inquirer = require('inquirer');
-const { Circle, Triangle, Square } = require('./lib/shapes');
 const SVG = require(('./lib/svg'))
+const { Circle, Triangle, Square } = require('./lib/shapes');
+
 
 
 
@@ -14,7 +15,7 @@ inquirer
         },
         {
             type: 'input',
-            name: 'texColor',
+            name: 'textColor',
             message: 'Enter a text color keyword (OR a hexadecimal number)'
         },
         {
@@ -45,7 +46,7 @@ inquirer
 
         shape.setColor(data.shapeColor)
         const svg = new SVG;
-        svg.setText(data.text, data.textColor)
         svg.setShape(shape)
+        svg.setText(data.text, data.textColor)
         fs.writeFileSync('logo.svg', svg.render())
     })
