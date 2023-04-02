@@ -1,56 +1,51 @@
 const fs = require('fs');
 const inquirer = require('inquirer');
-const shapes = require('./lib/shapes.js');
+const { Circle, Triangle, Square } = require('./lib/shapes');
+const SVG = require(('./lib/svg'))
 
 
 
-const questions = [
-    {
-        type: 'input',
-        name: 'texInput',
-        message: 'Enter 3 Characters'
-    },
-    {
-        type: 'input',
-        name: 'texColor',
-        message: 'Enter a color keyword (OR a hexadecimal number)'
-    },
-    {
-        type: 'list',
-        name: 'shape',
-        message: 'Choose a shape)',
-        choices: ['Circle', 'Square', 'Triangle']
-    },
-    {
-        type: 'input',
-        name: 'shapeColor',
-        message: 'Enter a color keyword (OR a hexadecimal number)'
-    },
-]
-const writeToFile = data => {
-    fs.writeFile('logo.svg', data, (err) => {
-        if (err) {
-            console.error(err);
-        } else {
-            console.log('Generated logo.svg')
+inquirer
+    .prompt([
+        {
+            type: 'input',
+            name: 'text',
+            message: 'Enter 3 Characters'
+        },
+        {
+            type: 'input',
+            name: 'texColor',
+            message: 'Enter a text color keyword (OR a hexadecimal number)'
+        },
+        {
+            type: 'list',
+            name: 'shape',
+            message: 'Choose a shape)',
+            choices: ['Circle', 'Square', 'Triangle']
+        },
+        {
+            type: 'input',
+            name: 'shapeColor',
+            message: 'Enter a shape color keyword (OR a hexadecimal number)'
+        },
+    ])
+
+    .then((data) => {
+        console.log(data);
+        let shape;
+        if (data.shape === 'Circle') {
+            shape = new Circle
         }
-    })
-}
+        if (data.shape === 'Triangle') {
+            shape = new Triangle
+        }
+        if (data.shape === 'Square') {
+            shape = new Triangle
+        }
 
-
-
-
-//function to initialize app
-const init = () => {
-    return inquirer.prompt(questions);
-}
-
-//function call to initialize app
-init()
-    .then(answers => {
-        return shapes(answers);
-    })
-
-    .then(data => {
-        return writeToFile(data);
+        shape.setColor(data.shapeColor)
+        const svg = new SVG;
+        svg.setText(data.text, data.textColor)
+        svg.setShape(shape)
+        fs.writeFileSync('logo.svg', svg.render())
     })
