@@ -5,7 +5,7 @@ const { Circle, Triangle, Square } = require('./lib/shapes');
 
 
 
-
+// inquirer prompts present input questions in the command line to determine the svg attributes
 inquirer
     .prompt([
         {
@@ -30,9 +30,9 @@ inquirer
             message: 'Enter a shape color keyword (OR a hexadecimal number)'
         },
     ])
-
+// the data then is used generate instances of selected Shapes class
     .then((data) => {
-        console.log(data);
+        
         let shape;
         if (data.shape === 'Circle') {
             shape = new Circle
@@ -43,10 +43,11 @@ inquirer
         if (data.shape === 'Square') {
             shape = new Triangle
         }
-
+// the new Shape includes the input text, text color and shape color
         shape.setColor(data.shapeColor)
         const svg = new SVG;
         svg.setShape(shape)
         svg.setText(data.text, data.textColor)
         fs.writeFileSync('logo.svg', svg.render())
+        console.log('Generated logo.svg');
     })
