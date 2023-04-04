@@ -41,7 +41,7 @@ inquirer
             shape = new Triangle
         }
         if (data.shape === 'Square') {
-            shape = new Triangle
+            shape = new Square
         }
 // the new Shape includes the input text, text color and shape color
         shape.setColor(data.shapeColor)
